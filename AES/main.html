@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AES Encryption and Decryption</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    .container {
+        text-align: center;
+    }
+    textarea, input[type="text"], input[type="button"] {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    #encrypted, #decrypted {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>AES (Advanced Encryption Standard)</h2>
+    <!-- <h2>Encryption and Decryption</h2> -->
+    <textarea id="inputText" placeholder="Enter text" rows="10" cols="100"></textarea>
+    <br>
+    <input type="text" id="inputKey" placeholder="Enter encryption key">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    function encrypt() {
+        var text = document.getElementById("inputText").value;
+        var key = document.getElementById("inputKey").value;
+
+        var encryptedText = CryptoJS.AES.encrypt(text, key).toString();
+        document.getElementById("encrypted").textContent = "Encrypted Text: " + encryptedText;
+    }
+
+    function decrypt() {
+        var encryptedText = document.getElementById("inputText").value;
+        var key = document.getElementById("inputKey").value;
+
+        var decryptedBytes = CryptoJS.AES.decrypt(encryptedText, key);
+        var decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+        document.getElementById("decrypted").textContent = "Decrypted Text: " + decryptedText;
+    }
+</script>
+
+</body>
+</html>
