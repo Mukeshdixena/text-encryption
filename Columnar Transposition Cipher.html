@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Encryption and Decryption</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="toast" class="toast"></div>
+
+    <div class="container">
+        <h2>AES (Advanced Encryption Standard)</h2>
+        <!-- <h2>Encryption and Decryption</h2> -->
+        <textarea id="inputText" placeholder="Enter text" rows="10" cols="100"></textarea>
+        <br>
+        <input type="text" id="inputKey" placeholder="Enter encryption key">
+        <br>
+        <input type="button" value="Encrypt" onclick="encrypt()">
+        <input type="button" value="Decrypt" onclick="decrypt()">
+        <div id="encDiv">
+            <label>Encrypted text</label>
+            <input type="text" id="encrypted" class="out" placeholder="null">
+            <button onclick="copyEncText()">Copy</button>
+        </div>
+        <div id="decDiv">
+            <label>Decrypted text</label>
+            <input type="text" id="decrypted" class="out" placeholder="null ">
+            <button onclick="copyDecText()">Copy</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
