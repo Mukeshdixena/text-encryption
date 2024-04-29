@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Substitution Cipher</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    .container {
+        text-align: center;
+    }
+    textarea, input[type="text"], input[type="button"] {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    #encrypted, #decrypted {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Substitution Cipher</h2>
+    <textarea id="inputText" placeholder="Enter text" rows="5" cols="50"></textarea>
+    <br>
+    <input type="text" id="key" placeholder="Enter substitution key">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    // Function to encrypt plaintext using Substitution Cipher
+    function encrypt() {
+        var text = document.getElementById("inputText").value.toUpperCase();
+        var key = document.getElementById("key").value.toUpperCase();
+
+        var encryptedText = '';
+
+        for (var i = 0; i < text.length; i++) {
+            var char = text[i];
+            if (char >= 'A' && char <= 'Z') {
+                var index = char.charCodeAt(0) - 65;
+                encryptedText += key[index] || char; // Use substitution key if available, otherwise keep the original character
+            } else {
+                encryptedText += char; // Keep non-alphabetic characters unchanged
+            }
+        }
+
+        document.getElementById("encrypted").textContent = "Encrypted Text: " + encryptedText;
+    }
+
+    // Function to decrypt ciphertext using Substitution Cipher
+    function decrypt() {
+        var text = document.getElementById("inputText").value.toUpperCase();
+        var key = document.getElementById("key").value.toUpperCase();
+
+        var decryptedText = '';
+
+        for (var i = 0; i < text.length; i++) {
+            var char = text[i];
+            if (char >= 'A' && char <= 'Z') {
+                var index = key.indexOf(char);
+                decryptedText += String.fromCharCode(index + 65); // Retrieve original character from the substitution key
+            } else {
+                decryptedText += char; // Keep non-alphabetic characters unchanged
+            }
+        }
+
+        document.getElementById("decrypted").textContent = "Decrypted Text: " + decryptedText;
+    }
+</script>
+
+</body>
+</html>

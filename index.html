@@ -1,15 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text-encryption</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .items {
+            width: 60%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .card {
+            /* width: 200px; */
+            cursor: pointer;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card a {
+
+            height: 100%;
+            width: 100%;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+
+        }
+
+        .card a:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
+
 <body>
-    <a href="Caesar_cipher/main.html">Caesar Cipher</a>
-    <a href="Vigenere_Cipher/main.html">Vigenere Cipher</a>
-    <a href="AES/main.html">AES</a>
-    <a href="RSA/main.html">AES</a>
+    <h1>Text Encrypting using various Algorithms</h1>
+    <div class="container">
+        <div class="items">
+
+            <a href="AES/main.html">
+                <div class="card">
+                    AES
+                </div>
+            </a>
+            <a href="RSA/main.html">
+                <div class="card">
+                    RSA
+                </div>
+            </a>
+            <a href="DES/main.html">
+                <div class="card">
+                    DES
+                </div>
+            </a>
+
+            <a href="Caesar_cipher/main.html">
+                <div class="card">
+                    Caesar Cipher
+                </div>
+            </a>
+            <a href="Vigenere_Cipher/main.html">
+                <div class="card">
+                    Vigenere Cipher
+                </div>
+            </a>
+            <a href="Feistel_Cipher/main.html">
+                <div class="card">
+                    Feistel Cipher
+                </div>
+            </a>
+            <a href="Hill Cipher/main.html">
+                <div class="card">
+                    Hill Cipher
+                </div>
+            </a>
+            <a href="Rail Fence Cipher/main.html">
+                <div class="card">
+                    Rail Fence Cipher
+                </div>
+            </a>
+            <a href="Columnar Transposition Cipher/main.html">
+                <div class="card">
+                    Columnar Transposition Cipher
+                </div>
+            </a>
+            <a href="Substitution Cipher/main.html">
+                <div class="card">
+                    Substitution Cipher
+                </div>
+            </a>
+            <a href="Stream Ciphers/main.html">
+                <div class="card">
+                    Stream Ciphers
+                </div>
+            </a>
+            <a href="Playfair Ciphers/main.html">
+                <div class="card">
+                    Playfair Cipher
+                </div>
+            </a>
+        </div>
+
+    </div>
 </body>
+
 </html>

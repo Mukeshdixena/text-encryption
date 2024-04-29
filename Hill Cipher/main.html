@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hill Cipher</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    .container {
+        text-align: center;
+    }
+    textarea, input[type="text"], input[type="button"] {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    #encrypted, #decrypted {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Hill Cipher</h2>
+    <textarea id="inputText" placeholder="Enter text" rows="10" cols="100"></textarea>
+    <br>
+    <input type="text" id="inputKey" placeholder="Enter key (matrix)">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    // Function to convert character to number (A=0, B=1, ..., Z=25)
+    function charToNum(char) {
+        return char.toUpperCase().charCodeAt(0) - 65;
+    }
+
+    // Function to convert number to character (0=A, 1=B, ..., 25=Z)
+    function numToChar(num) {
+        return String.fromCharCode(num + 65);
+    }
+
+    // Function to encrypt plaintext using Hill cipher
+    function encrypt() {
+        var text = document.getElementById("inputText").value.toUpperCase().replace(/[^A-Z]/g, ''); // Remove non-alphabetic characters
+        var key = document.getElementById("inputKey").value.toUpperCase().replace(/[^A-Z]/g, ''); // Remove non-alphabetic characters
+
+        // Check if the key is valid for encryption (must be a square matrix)
+        var keySize = Math.sqrt(key.length);
+        if (keySize !== parseInt(keySize, 10)) {
+            alert("Invalid key: Key must be a square matrix.");
+            return;
+        }
+
+        // Convert key string to a matrix
+        var keyMatrix = [];
+        for (var i = 0; i < keySize; i++) {
+            keyMatrix[i] = [];
+            for (var j = 0; j < keySize; j++) {
+                keyMatrix[i][j] = charToNum(key[i * keySize + j]);
+            }
+        }
+
+        // Pad plaintext with 'X' if necessary to make its length a multiple of keySize
+        while (text.length % keySize !== 0) {
+            text += 'X';
+        }
+
+        // Encrypt plaintext in blocks of size keySize
+        var encryptedText = '';
+        for (var k = 0; k < text.length; k += keySize) {
+            var block = [];
+            for (var m = 0; m < keySize; m++) {
+                block.push(charToNum(text[k + m]));
+            }
+            var encryptedBlock = multiplyMatrix(keyMatrix, block);
+            for (var n = 0; n < encryptedBlock.length; n++) {
+                encryptedText += numToChar(encryptedBlock[n] % 26); // Apply modulo 26 for each element
+            }
+        }
+
+        document.getElementById("encrypted").textContent = "Encrypted Text: " + encryptedText;
+    }
+
+    // Function to decrypt ciphertext using Hill cipher
+    function decrypt() {
+        var text = document.getElementById("inputText").value.toUpperCase().replace(/[^A-Z]/g, ''); // Remove non-alphabetic characters
+        var key = document.getElementById("inputKey").value.toUpperCase().replace(/[^A-Z]/g, ''); // Remove non-alphabetic characters
+
+        // Check if the key is valid for decryption (must be a square matrix)
+        var keySize = Math.sqrt(key.length);
+        if (keySize !== parseInt(keySize, 10)) {
+            alert("Invalid key: Key must be a square matrix.");
+            return;
+        }
+
+        // Convert key string to a matrix
+        var keyMatrix = [];
+        for (var i = 0; i < keySize; i++) {
+            keyMatrix[i] = [];
+            for (var j = 0; j < keySize; j++) {
+                keyMatrix[i][j] = charToNum(key[i * keySize + j]);
+            }
+        }
+
+        // Calculate the inverse of the key matrix
+        var invKeyMatrix = numeric.inv(keyMatrix);
+
+        // Pad plaintext with 'X' if necessary to make its length a multiple of keySize
+        while (text.length % keySize !== 0) {
+            text += 'X';
+        }
+
+        // Decrypt plaintext in blocks of size keySize
+        var decryptedText = '';
+        for (var k = 0; k < text.length; k += keySize) {
+            var block = [];
+            for (var m = 0; m < keySize; m++) {
+                block.push(charToNum(text[k + m]));
+            }
+            var decryptedBlock = multiplyMatrix(invKeyMatrix, block);
+            for (var n = 0; n < decryptedBlock.length; n++) {
+                decryptedText += numToChar(modInverse(decryptedBlock[n], 26)); // Apply modulo 26 and find modular inverse for each element
+            }
+        }
+
+        document.getElementById("decrypted").textContent = "Decrypted Text: " + decryptedText;
+    }
+
+    // Function to multiply a matrix by a vector
+    function multiplyMatrix(matrix, vector) {
+        var result = [];
+        for (var i = 0; i < matrix.length; i++) {
+            var sum = 0;
+            for (var j = 0; j < matrix[i].length; j++) {
+                sum += matrix[i][j] * vector[j];
+            }
+            result.push(sum);
+        }
+        return result;
+    }
+
+    // Function to calculate the modular inverse of a number (mod n)
+    function modInverse(a, n) {
+        for (var x = 1; x < n; x++) {
+            if ((a * x) % n === 1) {
+                return x;
+            }
+        }
+        return -1; // No modular inverse exists
+    }
+</script>
+
+</body>
+</html>
