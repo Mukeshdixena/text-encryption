@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DES Encryption and Decryption</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/triplesec/0.9.0/triplesec.min.js"></script>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>DES Encryption and Decryption</h2>
+    <textarea id="inputText" placeholder="Enter text" rows="10" cols="100"></textarea>
+    <br>
+    <input type="text" id="inputKey" placeholder="Enter encryption key">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    function encrypt() {
+        var text = document.getElementById("inputText").value;
+        var key = document.getElementById("inputKey").value;
+
+        triplesec.encrypt({
+            data: new Buffer(text),
+            key: new Buffer(key),
+            algorithm: 'des'
+        }, function (err, ciphertext) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            var encryptedText = ciphertext.toString('hex');
+            document.getElementById("encrypted").textContent = "Encrypted Text: " + encryptedText;
+        });
+    }
+
+    function decrypt() {
+        var encryptedText = document.getElementById("inputText").value;
+        var key = document.getElementById("inputKey").value;
+
+        var encryptedBuffer = new Buffer(encryptedText, 'hex');
+
+        triplesec.decrypt({
+            data: encryptedBuffer,
+            key: new Buffer(key),
+            algorithm: 'des'
+        }, function (err, plaintext) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            var decryptedText = plaintext.toString();
+            document.getElementById("decrypted").textContent = "Decrypted Text: " + decryptedText;
+        });
+    }
+</script>
+
+</body>
+</html>

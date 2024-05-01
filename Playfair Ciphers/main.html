@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playfair Cipher</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Playfair Cipher</h2>
+    <textarea id="inputText" placeholder="Enter text" rows="5" cols="50"></textarea>
+    <br>
+    <input type="text" id="key" placeholder="Enter keyword">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    // Function to generate the Playfair cipher key table
+    function generateKeyTable(key) {
+        var keyTable = [];
+        var keyString = key.toUpperCase().replace(/[^A-Z]/g, '');
+
+        var alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'; // Excluding 'J' (I and J are usually treated as the same letter in Playfair Cipher)
+
+        // Populate key table with unique letters from the key
+        for (var i = 0; i < keyString.length; i++) {
+            if (!keyTable.includes(keyString[i])) {
+                keyTable.push(keyString[i]);
+            }
+        }
+
+        // Populate remaining cells with the remaining letters of the alphabet
+        for (var j = 0; j < alphabet.length; j++) {
+            if (!keyTable.includes(alphabet[j])) {
+                keyTable.push(alphabet[j]);
+            }
+        }
+
+        return keyTable;
+    }
+
+    // Function to prepare plaintext by replacing 'J' with 'I' and grouping letters into digraphs
+    function preparePlaintext(text) {
+        var processedText = text.toUpperCase().replace(/[^A-Z]/g, '').replace(/J/g, 'I'); // Replace 'J' with 'I'
+        var digraphs = [];
+
+        for (var i = 0; i < processedText.length; i += 2) {
+            var first = processedText[i];
+            var second = (i + 1 < processedText.length) ? processedText[i + 1] : 'X'; // Append 'X' if plaintext has odd length
+            digraphs.push([first, second]);
+        }
+
+        return digraphs;
+    }
+
+    // Function to encrypt plaintext using Playfair Cipher
+    function encrypt() {
+        var plaintext = document.getElementById("inputText").value;
+        var key = document.getElementById("key").value;
+
+        var keyTable = generateKeyTable(key);
+        var digraphs = preparePlaintext(plaintext);
+
+        var encryptedText = '';
+
+        for (var i = 0; i < digraphs.length; i++) {
+            var pair = digraphs[i];
+            var firstIndex = keyTable.indexOf(pair[0]);
+            var secondIndex = keyTable.indexOf(pair[1]);
+
+            var firstRow = Math.floor(firstIndex / 5);
+            var firstCol = firstIndex % 5;
+            var secondRow = Math.floor(secondIndex / 5);
+            var secondCol = secondIndex % 5;
+
+            // Case 1: Letters in the same row
+            if (firstRow === secondRow) {
+                encryptedText += keyTable[firstRow * 5 + (firstCol + 1) % 5];
+                encryptedText += keyTable[secondRow * 5 + (secondCol + 1) % 5];
+            }
+            // Case 2: Letters in the same column
+            else if (firstCol === secondCol) {
+                encryptedText += keyTable[((firstRow + 1) % 5) * 5 + firstCol];
+                encryptedText += keyTable[((secondRow + 1) % 5) * 5 + secondCol];
+            }
+            // Case 3: Letters form a rectangle
+            else {
+                encryptedText += keyTable[firstRow * 5 + secondCol];
+                encryptedText += keyTable[secondRow * 5 + firstCol];
+            }
+        }
+
+        document.getElementById("encrypted").textContent = "Encrypted Text: " + encryptedText;
+    }
+
+    // Function to decrypt ciphertext using Playfair Cipher
+   

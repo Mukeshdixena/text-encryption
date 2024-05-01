@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stream Cipher</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Stream Cipher</h2>
+    <textarea id="inputText" placeholder="Enter text" rows="5" cols="50"></textarea>
+    <br>
+    <input type="text" id="key" placeholder="Enter encryption key">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    // Function to encrypt plaintext using Stream Cipher
+    function encrypt() {
+        var text = document.getElementById("inputText").value;
+        var key = document.getElementById("key").value;
+
+        var encryptedText = '';
+        for (var i = 0; i < text.length; i++) {
+            var charCode = text.charCodeAt(i);
+            var keyCode = key.charCodeAt(i % key.length);
+            var encryptedCharCode = charCode ^ keyCode; // XOR operation
+            encryptedText += String.fromCharCode(encryptedCharCode);
+        }
+
+        document.getElementById("encrypted").textContent = "Encrypted Text: " + btoa(encryptedText); // Using base64 for display
+    }
+
+    // Function to decrypt ciphertext using Stream Cipher
+    function decrypt() {
+        var encryptedText = atob(document.getElementById("inputText").value); // Decode from base64
+        var key = document.getElementById("key").value;
+
+        var decryptedText = '';
+        for (var i = 0; i < encryptedText.length; i++) {
+            var charCode = encryptedText.charCodeAt(i);
+            var keyCode = key.charCodeAt(i % key.length);
+            var decryptedCharCode = charCode ^ keyCode; // XOR operation
+            decryptedText += String.fromCharCode(decryptedCharCode);
+        }
+
+        document.getElementById("decrypted").textContent = "Decrypted Text: " + decryptedText;
+    }
+</script>
+
+</body>
+</html>

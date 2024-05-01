@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feistel Cipher</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Feistel Cipher</h2>
+    <textarea id="inputText" placeholder="Enter text" rows="10" cols="100"></textarea>
+    <br>
+    <input type="text" id="inputKey" placeholder="Enter key">
+    <br>
+    <input type="button" value="Encrypt" onclick="encrypt()">
+    <input type="button" value="Decrypt" onclick="decrypt()">
+    <div id="encrypted"></div>
+    <div id="decrypted"></div>
+</div>
+
+<script>
+    function feistelRound(textBlock, key) {
+        // Implement a simple Feistel round
+        var left = textBlock.substring(0, textBlock.length / 2);
+        var right = textBlock.substring(textBlock.length / 2);
+
+        var newLeft = right;
+        var newRight = xor(left, key);
+
+        return newLeft + newRight;
+    }
+
+    function xor(a, b) {
+        // Simple XOR operation between two strings of binary digits
+        var result = '';
+        for (var i = 0; i < a.length; i++) {
+            result += a[i] === b[i] ? '0' : '1';
+        }
+        return result;
+    }
+
+    function encrypt() {
+        var text = document.getElementById("inputText").value;
+        var key = document.getElementById("inputKey").value;
+
+        // Pad the text if necessary to make its length even
+        if (text.length % 2 !== 0) {
+            text += ' ';
+        }
+
+        // Perform Feistel rounds
+        var rounds = 16; // Number of rounds
+        var block = text;
+        for (var i = 0; i < rounds; i++) {
+            block = feistelRound(block, key);
+        }
+
+        document.getElementById("encrypted").textContent = "Encrypted Text: " + block;
+    }
+
+    function decrypt() {
+        // For Feistel cipher, decryption is the same as encryption
+        encrypt();
+    }
+</script>
+
+</body>
+</html>
